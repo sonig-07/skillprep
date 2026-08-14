@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: skillprep
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/skillprep}
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+jwt:
+  secret: ${JWT_SECRET:change-this-super-secret-key-in-env-min-32-chars-long}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+groq:
+  api-key: ${GROQ_API_KEY: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}
+  base-url: https://api.groq.com/openai/v1
+  model: ${GROQ_MODEL:llama-3.3-70b-versatile}
+
+logging:
+  level:
+    com.skillprep: INFO

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillPrep — Practice grounded in your resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ AUTH SCREEN ============ -->
+<section id="view-auth" class="auth-shell view">
+  <div class="auth-panel">
+    <div class="brand-mark">
+      <span class="brand-ring" aria-hidden="true"></span>
+      <span class="brand-word">SkillPrep</span>
+    </div>
+    <p class="auth-tagline">Practice questions pulled from your actual resume and the job you want — not a generic bank.</p>
+
+    <div class="auth-tabs" role="tablist">
+      <button class="auth-tab active" data-auth-tab="signin" role="tab">Sign in</button>
+      <button class="auth-tab" data-auth-tab="signup" role="tab">Create account</button>
+    </div>
+
+    <form id="form-signin" class="auth-form">
+      <label class="field">
+        <span>Email</span>
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" name="password" required autocomplete="current-password">
+      </label>
+      <p class="form-error" data-error-for="signin"></p>
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+    </form>
+
+    <form id="form-signup" class="auth-form hidden">
+      <label class="field">
+        <span>Name</span>
+        <input type="text" name="name" required autocomplete="name">
+      </label>
+      <label class="field">
+        <span>Email</span>
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" name="password" required minlength="6" autocomplete="new-password">
+      </label>
+      <label class="field">
+        <span>Years of experience</span>
+        <select name="experienceLevel" required>
+          <option value="0">0 — Fresher / student</option>
+          <option value="1">1 year</option>
+          <option value="2">2 years</option>
+          <option value="3">3 years</option>
+          <option value="4">4 years</option>
+          <option value="5">5+ years</option>
+        </select>
+      </label>
+      <p class="form-error" data-error-for="signup"></p>
+      <button type="submit" class="btn btn-primary btn-block">Create account</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============ APP SHELL ============ -->
+<div id="view-app" class="app-shell view hidden">
+
+  <aside class="sidebar">
+    <div class="brand-mark small">
+      <span class="brand-ring" aria-hidden="true"></span>
+      <span class="brand-word">SkillPrep</span>
+    </div>
+
+    <nav class="side-nav">
+      <button class="nav-item active" data-route="dashboard">
+        <span class="nav-ico">◎</span> Dashboard
+      </button>
+      <button class="nav-item" data-route="resume-jd">
+        <span class="nav-ico">▤</span> Resume &amp; JD
+      </button>
+      <button class="nav-item" data-route="practice">
+        <span class="nav-ico">✎</span> Practice
+      </button>
+      <button class="nav-item" data-route="bank">
+        <span class="nav-ico">▥</span> Question Bank
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light theme">
+        <span class="theme-toggle-track"><span class="theme-toggle-thumb"></span></span>
+        <span class="theme-toggle-label">Dark mode</span>
+      </button>
+      <div class="user-chip">
+        <span class="user-chip-avatar" id="user-avatar-initial">?</span>
+        <div class="user-chip-meta">
+          <span id="user-chip-name">—</span>
+          <span id="user-chip-level" class="user-chip-sub">—</span>
+        </div>
+      </div>
+      <button id="btn-logout" class="btn btn-ghost btn-block small">Log out</button>
+    </div>
+  </aside>
+
+  <main class="main-panel">
+
+    <!-- ---------- DASHBOARD ---------- -->
+    <section id="route-dashboard" class="route">
+      <header class="route-header">
+        <div>
+          <h1>Reflection dashboard</h1>
+          <p class="route-sub">Where your practice is actually landing.</p>
+        </div>
+        <div class="route-actions">
+          <button class="btn btn-ghost" data-action="download-bank">Download question bank</button>
+        </div>
+      </header>
+
+      <div id="dashboard-empty" class="empty-state hidden">
+        <p class="empty-title">Nothing scored yet</p>
+        <p class="empty-body">Answer a few practice questions and this page fills in — average score, weak skills, trend, all of it.</p>
+        <button class="btn btn-primary" data-route-to="practice">Start practicing</button>
+      </div>
+
+      <div id="dashboard-content" class="hidden">
+        <div class="stat-row">
+          <div class="stat-card">
+            <span class="stat-label">Overall average</span>
+            <div class="score-ring-wrap">
+              <svg class="score-ring" viewBox="0 0 120 120"><circle class="ring-track" cx="60" cy="60" r="52"/><circle id="ring-overall" class="ring-fill" cx="60" cy="60" r="52"/></svg>
+              <span id="stat-overall-score" class="score-ring-value">—</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Questions answered</span>
+            <span id="stat-total-answered" class="stat-big">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Score trend</span>
+            <svg id="trend-sparkline" class="sparkline" viewBox="0 0 200 60" preserveAspectRatio="none"></svg>
+          </div>
+        </div>
+
+        <div class="panel-grid">
+          <div class="panel">
+            <h3>By question type</h3>
+            <div id="breakdown-type" class="bar-list"></div>
+          </div>
+          <div class="panel">
+            <h3>By experience level used</h3>
+            <div id="breakdown-level" class="bar-list"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head-row">
+            <h3>By skill / topic</h3>
+            <button class="btn btn-ghost small" data-action="practice-weakest">Practice my weakest skill →</button>
+          </div>
+          <div id="breakdown-skill" class="bar-list wide"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head-row">
+            <h3>Recent sessions</h3>
+            <button class="btn btn-ghost small" data-action="view-flagged">Review flagged questions →</button>
+          </div>
+          <div id="recent-sessions" class="session-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- RESUME & JD ---------- -->
+    <section id="route-resume-jd" class="route hidden">
+      <header class="route-header">
+        <div>
+          <h1>Resume &amp; job description</h1>
+          <p class="route-sub">Everything gets generated from these two documents.</p>
+        </div>
+      </header>
+
+      <div class="panel-grid two-col">
+        <div class="panel">
+          <h3>Resume</h3>
+          <div class="dropzone" id="resume-dropzone">
+            <input type="file" id="resume-file-input" accept=".pdf,.txt" hidden>
+            <p class="dropzone-title">Upload PDF or .txt</p>
+            <p class="dropzone-sub">Replaces your active resume. Old ones stay saved below.</p>
+            <button class="btn btn-primary small" id="btn-choose-resume">Choose file</button>
+          </div>
+          <p class="form-error" data-error-for="resume"></p>
+          <div id="resume-list" class="doc-list"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Job description</h3>
+          <form id="form-jd">
+            <label class="field">
+              <span>Role title (optional)</span>
+              <input type="text" name="title" placeholder="e.g. Backend Engineer, Acme Corp">
+            </label>
+            <label class="field">
+              <span>Paste the JD text</span>
+              <textarea name="rawText" rows="8" required placeholder="Paste the full job description here…"></textarea>
+            </label>
+            <p class="form-error" data-error-for="jd"></p>
+            <button type="submit" class="btn btn-primary">Save job description</button>
+          </form>
+          <div id="jd-list" class="doc-list"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head-row">
+          <h3>Skill match</h3>
+          <button class="btn btn-primary small" id="btn-run-match">Run match analysis</button>
+        </div>
+        <div id="match-result" class="match-result hidden">
+          <div class="match-score-row">
+            <div class="score-ring-wrap small">
+              <svg class="score-ring" viewBox="0 0 120 120"><circle class="ring-track" cx="60" cy="60" r="52"/><circle id="ring-match" class="ring-fill" cx="60" cy="60" r="52"/></svg>
+              <span id="match-score-value" class="score-ring-value">—</span>
+            </div>
+            <p id="match-summary" class="match-summary"></p>
+          </div>
+          <div class="match-skills-grid">
+            <div>
+              <h4>Matched</h4>
+              <div id="match-matched" class="chip-list"></div>
+            </div>
+            <div>
+              <h4>Missing (by importance)</h4>
+              <div id="match-missing" class="chip-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PRACTICE ---------- -->
+    <section id="route-practice" class="route hidden">
+      <header class="route-header">
+        <div>
+          <h1>Practice</h1>
+          <p class="route-sub">Generate a fresh session or answer what's queued.</p>
+        </div>
+      </header>
+
+      <div id="practice-setup" class="panel">
+        <h3>New session</h3>
+        <form id="form-practice-setup" class="setup-grid">
+          <label class="field">
+            <span>Number of questions</span>
+            <input type="number" name="numQuestions" value="5" min="1" max="20">
+          </label>
+          <label class="field">
+            <span>Difficulty</span>
+            <select name="difficulty">
+              <option value="EASY">Easy</option>
+              <option value="MEDIUM" selected>Medium</option>
+              <option value="HARD">Hard</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Experience level</span>
+            <select name="experienceLevel">
+              <option value="0">0 — Fresher</option>
+              <option value="1">1 year</option>
+              <option value="2">2 years</option>
+              <option value="3">3 years</option>
+              <option value="4">4 years</option>
+              <option value="5">5+ years</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Focus skill (optional)</span>
+            <select name="focusSkill"><option value="">Mixed</option></select>
+          </label>
+          <label class="field">
+            <span>Focus project (optional)</span>
+            <select name="focusProject"><option value="">Any</option></select>
+          </label>
+          <div class="field field-submit">
+            <button type="submit" class="btn btn-primary btn-block">Generate session</button>
+          </div>
+        </form>
+        <p class="form-error" data-error-for="practice"></p>
+      </div>
+
+      <div id="practice-session" class="hidden">
+        <div class="session-progress">
+          <span id="session-progress-label">Question 1 of 5</span>
+          <div class="progress-track"><div id="session-progress-fill" class="progress-fill"></div></div>
+        </div>
+
+        <div id="question-card" class="panel question-card">
+          <div class="question-tags">
+            <span id="q-type-tag" class="tag"></span>
+            <span id="q-topic-tag" class="tag tag-muted"></span>
+            <span id="q-diff-tag" class="tag tag-muted"></span>
+          </div>
+          <p id="question-text" class="question-text"></p>
+
+          <div id="answer-zone">
+            <textarea id="answer-input" rows="6" placeholder="Type your answer, or use the mic…"></textarea>
+            <div class="answer-tools">
+              <button type="button" id="btn-mic" class="btn btn-ghost small">🎤 Speak answer</button>
+              <span id="mic-status" class="mic-status"></span>
+              <button type="button" id="btn-submit-answer" class="btn btn-primary">Submit answer</button>
+            </div>
+          </div>
+
+          <div id="feedback-zone" class="feedback-zone hidden">
+            <div class="feedback-score-row">
+              <div class="score-ring-wrap small">
+                <svg class="score-ring" viewBox="0 0 120 120"><circle class="ring-track" cx="60" cy="60" r="52"/><circle id="ring-feedback" class="ring-fill" cx="60" cy="60" r="52"/></svg>
+                <span id="feedback-score-value" class="score-ring-value">—</span>
+              </div>
+              <div class="feedback-lists">
+                <div>
+                  <h4>Strengths</h4>
+                  <ul id="feedback-strengths"></ul>
+                </div>
+                <div>
+                  <h4>Improve</h4>
+                  <ul id="feedback-improvements"></ul>
+                </div>
+              </div>
+            </div>
+            <div class="ideal-answer">
+              <h4>What a strong answer would include</h4>
+              <p id="feedback-ideal"></p>
+            </div>
+            <button type="button" id="btn-next-question" class="btn btn-primary">Next question →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- QUESTION BANK ---------- -->
+    <section id="route-bank" class="route hidden">
+      <header class="route-header">
+        <div>
+          <h1>Question bank</h1>
+          <p class="route-sub">Every question you've ever seen, browsable and reusable.</p>
+        </div>
+        <div class="route-actions">
+          <button class="btn btn-ghost" data-action="export-csv">Export CSV</button>
+          <button class="btn btn-ghost" data-action="export-pdf">Export PDF</button>
+        </div>
+      </header>
+
+      <div class="panel filter-bar">
+        <input type="text" id="bank-keyword" placeholder="Search questions…" class="filter-input">
+        <select id="bank-filter-type"><option value="">All types</option><option value="GENERAL">General</option><option value="PROJECT_SPECIFIC">Project-specific</option><option value="SKILL_GAP">Skill-gap</option></select>
+        <select id="bank-filter-difficulty"><option value="">Any difficulty</option><option value="EASY">Easy</option><option value="MEDIUM">Medium</option><option value="HARD">Hard</option></select>
+        <select id="bank-filter-answered"><option value="">Answered + unanswered</option><option value="true">Answered</option><option value="false">Unanswered</option></select>
+        <select id="bank-filter-flagged"><option value="">All</option><option value="true">Flagged only</option></select>
+        <select id="bank-sort"><option value="recent">Most recent</option><option value="lowest_score">Lowest score</option><option value="most_attempted">Most attempted</option></select>
+      </div>
+
+      <div class="bank-toolbar">
+        <label class="checkbox-inline"><input type="checkbox" id="bank-select-all"> Select all shown</label>
+        <button class="btn btn-primary small" id="btn-build-from-selection">Build session from selected →</button>
+        <span id="bank-selection-count" class="bank-selection-count"></span>
+      </div>
+
+      <div id="bank-list" class="bank-list"></div>
+      <div id="bank-empty" class="empty-state hidden">
+        <p class="empty-title">No questions match these filters</p>
+        <p class="empty-body">Try clearing a filter, or generate a fresh practice session.</p>
+      </div>
+    </section>
+
+    <!-- ---------- QUESTION DETAIL MODAL ---------- -->
+    <div id="modal-question-detail" class="modal-backdrop hidden">
+      <div class="modal-panel">
+        <button class="modal-close" data-action="close-modal">✕</button>
+        <div id="modal-question-content"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
