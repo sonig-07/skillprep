@@ -17,10 +17,12 @@ jwt:
   expiration-ms: ${JWT_EXPIRATION_MS:86400000}
 
 groq:
-  api-key: ${GROQ_API_KEY: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}
-  base-url: https://api.groq.com/openai/v1
-  model: ${GROQ_MODEL:llama-3.3-70b-versatile}
+
+  api-key: ${GROQ_API_KEY}
+  base-url: https://api.groq.com/openai/v1/chat/completions
+  model: openai/gpt-oss-120b
 
 logging:
   level:
     com.skillprep: INFO
+
