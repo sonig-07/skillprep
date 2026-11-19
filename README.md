@@ -59,7 +59,7 @@ It includes a personal question bank, answer feedback, practice sessions, and a 
 
 ```text
 src/main/java/com/skillprep/
-├── ai            AiService (talks to the AI)
+├── ai            AiService
 ├── config        AppConfig
 ├── controller    REST endpoints
 ├── dto           Request and response shapes
@@ -71,14 +71,14 @@ src/main/java/com/skillprep/
 
 src/main/resources/
 ├── application.yml
-└── static        index.html, css, js (the frontend)
+└── static        index.html, css, js
 ```
 
 ## Requirements
 
 * Java 17+
 * Maven
-* MongoDB (running locally)
+* MongoDB
 * [Ollama](https://ollama.com) with a model downloaded: `ollama pull llama3.2`
 
 ## Run the Project
@@ -96,9 +96,7 @@ mvn spring-boot:run
 http://localhost:8080
 ```
 
-No API key is needed with Ollama.
-
-## Settings (environment variables, all optional)
+## Settings (environment variables)
 
 ```text
 MONGODB_URI          default: mongodb://localhost:27017/skillprep
@@ -106,7 +104,7 @@ JWT_SECRET           at least 32 characters
 JWT_EXPIRATION_MS    default: 86400000 (24 hours)
 AI_BASE_URL          default: Ollama on localhost:11434
 AI_MODEL             default: llama3.2
-AI_API_KEY           only needed for online services such as Groq
+AI_API_KEY           needed for online services (gemini, groq, gpt)
 ```
 
 To use other AI instead of Ollama, set `AI_BASE_URL`, `AI_MODEL` to a AI model name, and `AI_API_KEY` to your key.
